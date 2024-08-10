@@ -10,6 +10,23 @@ def get_ema_crossovers(symbol):
     end_date = datetime.now().strftime('%Y-%m-%d')
     start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')  # Get data for the last day
     data = yf.download(symbol, interval='15m', period='1mo')
+    stock = yf.Ticker(symbol)
+    upcoming_dividends = stock.dividends
+    next_dividend_date = None
+    days_left = 0
+    
+    if not upcoming_dividends.empty:
+        # Get the most recent dividend date
+        next_dividend_date = upcoming_dividends.index[-1].strftime('%Y-%m-%d')
+        next_dividend_datetime = datetime.strptime(next_dividend_date, '%Y-%m-%d')
+        
+        # Calculate days left until the next dividend date
+        today = datetime.today()
+        if next_dividend_datetime > today:
+            days_left = (next_dividend_datetime - today).days
+        else:
+            days_left = 0
+    print(days_left , next_dividend_date)
     if data.empty:
         return None
  
