@@ -26,7 +26,7 @@ def fetch_historical_data(product, period, interval):
             days_left_dividend = 0
 
     # Earnings data
-    upcoming_earnings = stock.earnings_dates
+    upcoming_earnings = None #stock.earnings_dates
     next_earnings_date = None
     days_left_earnings = 0
 
