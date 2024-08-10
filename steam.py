@@ -30,13 +30,13 @@ def fetch_historical_data(product, period, interval):
     next_earnings_date = None
     days_left_earnings = 0
 
-    if not upcoming_earnings.empty:
-        next_earnings_date = upcoming_earnings.index[-1].strftime('%Y-%m-%d')
-        next_earnings_datetime = datetime.strptime(next_earnings_date, '%Y-%m-%d')
-        if next_earnings_datetime > today:
-            days_left_earnings = (next_earnings_datetime - today).days
-        else:
-            days_left_earnings = 0
+    #if not upcoming_earnings.empty:
+        #next_earnings_date = upcoming_earnings.index[-1].strftime('%Y-%m-%d')
+        #next_earnings_datetime = datetime.strptime(next_earnings_date, '%Y-%m-%d')
+        #if next_earnings_datetime > today:
+           # days_left_earnings = (next_earnings_datetime - today).days
+        #else:
+            #days_left_earnings = 0
 
     # Quarterly results (assuming quarterly results are linked to earnings dates)
     next_quarterly_results_date = next_earnings_date
