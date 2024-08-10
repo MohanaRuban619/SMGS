@@ -7,10 +7,46 @@ import pandas_ta as ta
 def fetch_historical_data(product, period, interval):
     # Fetch historical data using yfinance
     data = yf.download(product, interval=interval, period=period)
+    
+    # Fetch stock data for dividend and earnings information
+    stock = yf.Ticker(product)
+    
+    # Dividend data
+    upcoming_dividends = stock.dividends
+    next_dividend_date = None
+    days_left_dividend = 0
+    
+    if not upcoming_dividends.empty:
+        next_dividend_date = upcoming_dividends.index[-1].strftime('%Y-%m-%d')
+        next_dividend_datetime = datetime.strptime(next_dividend_date, '%Y-%m-%d')
+        today = datetime.today()
+        if next_dividend_datetime > today:
+            days_left_dividend = (next_dividend_datetime - today).days
+        else:
+            days_left_dividend = 0
+
+    # Earnings data
+    upcoming_earnings = stock.earnings_dates
+    next_earnings_date = None
+    days_left_earnings = 0
+
+    if not upcoming_earnings.empty:
+        next_earnings_date = upcoming_earnings.index[-1].strftime('%Y-%m-%d')
+        next_earnings_datetime = datetime.strptime(next_earnings_date, '%Y-%m-%d')
+        if next_earnings_datetime > today:
+            days_left_earnings = (next_earnings_datetime - today).days
+        else:
+            days_left_earnings = 0
+
+    # Quarterly results (assuming quarterly results are linked to earnings dates)
+    next_quarterly_results_date = next_earnings_date
+    days_left_quarterly_results = days_left_earnings
+
     # Calculate EMAs using pandas_ta
     data['EMA_40'] = ta.ema(data['Close'], length=40)
     data['EMA_89'] = ta.ema(data['Close'], length=89)
-    return data
+    
+    return data, next_dividend_date, days_left_dividend, next_earnings_date, days_left_earnings, next_quarterly_results_date, days_left_quarterly_results
 
 # Sidebar
 st.sidebar.title("Candlestick Charts")
@@ -49,11 +85,30 @@ product = st.sidebar.selectbox("Select Financial Instrument", [
     'CANBK.NS','PVRINOX.NS','MGL.NS','EXIDEIND.NS','PNB.NS','JKCEMENT.NS',
     'INDUSTOWER.NS','BSOFT.NS','INDIAMART.NS'])
 
-period = st.sidebar.selectbox("Select Period", ("1d","5d","1mo","max"))
-interval = st.sidebar.selectbox("Select Interval", ("1m","2m","5m","15m","30m","60m","90m","1h","1d","5d","1wk","1mo","3mo"))
+period = st.sidebar.selectbox("Select Period", ("1d", "5d", "1mo", "max"))
+interval = st.sidebar.selectbox("Select Interval", ("1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"))
 
 # Fetch historical data
-historical_data = fetch_historical_data(product, period, interval)
+historical_data, next_dividend_date, days_left_dividend, next_earnings_date, days_left_earnings, next_quarterly_results_date, days_left_quarterly_results = fetch_historical_data(product, period, interval)
+
+# Display upcoming dates in the sidebar
+if next_dividend_date and days_left_dividend > 0:
+    st.sidebar.success(f"Next Dividend Date: {next_dividend_date}")
+    st.sidebar.info(f"Days Left Until Dividend: {days_left_dividend} days")
+else:
+    st.sidebar.warning("No upcoming dividend date found.")
+
+if next_earnings_date and days_left_earnings > 0:
+    st.sidebar.success(f"Next Earnings Date: {next_earnings_date}")
+    st.sidebar.info(f"Days Left Until Earnings: {days_left_earnings} days")
+else:
+    st.sidebar.warning("No upcoming earnings date found.")
+
+if next_quarterly_results_date and days_left_quarterly_results > 0:
+    st.sidebar.success(f"Next Quarterly Results Date: {next_quarterly_results_date}")
+    st.sidebar.info(f"Days Left Until Quarterly Results: {days_left_quarterly_results} days")
+else:
+    st.sidebar.warning("No upcoming quarterly results date found.")
 
 # Display candlestick chart
 if historical_data is not None:
