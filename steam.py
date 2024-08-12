@@ -293,6 +293,7 @@ elif selected_page == "Page 2":
         # ... add any other content for the second page ... 
 
     if buy_signals:
+        data = sorted(data, key=lambda x: x[-2], reverse=True)
         columns = ['symbol', 'Open', 'Close', 'High', 'Low', 'Adj Close', 'EMA_89', 'EMA_40','EMA_40 - EMA_89', 'Trend']
         df = pd.DataFrame(data, columns=columns)
         st.table(df)
