@@ -4,7 +4,7 @@ import plotly.graph_objs as go
 import yfinance as yf
 import pandas_ta as ta
 from datetime import datetime, timedelta
-from tabulate import tabulate as tab
+
 import pandas as pd
 
 
