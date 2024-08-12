@@ -54,8 +54,41 @@ def fetch_historical_data(product, period, interval):
 
 # Sidebar
 st.sidebar.title("Candlestick Charts")
-selected_page = st.sidebar.selectbox("Select Page", ["Page 1", "Page 2"])
-if selected_page == "Page 1":
+selected_page = st.sidebar.selectbox("Select Page", ["Chart", "Trend List","All Stock List","HEATMAP","HEATMAP Volume"])
+
+stock_symbols = ['GRANULES.NS','TATACOMM.NS','SRF.NS','SAIL.NS','TRENT.NS','MARUTI.NS','JSWSTEEL.NS',
+        'JUBLFOOD.NS','GAIL.NS','HDFCLIFE.NS','POLYCAB.NS','ASIANPAINT.NS','LUPIN.NS',
+        'ICICIGI.NS','GLENMARK.NS','SUNTV.NS','MFSL.NS','SYNGENE.NS','OBEROIRLTY.NS',
+        'ATUL.NS','MCX.NS','ICICIPRULI.NS','NTPC.NS','TATAPOWER.NS','TORNTPHARM.NS',
+        'AUROPHARMA.NS','DLF.NS','IEX.NS','ZYDUSLIFE.NS','ALKEM.NS','HINDALCO.NS',
+        'BALKRISIND.NS','MRF.NS','NATIONALUM.NS','SBILIFE.NS','ABCAPITAL.NS','TVSMOTOR.NS',
+        'ADANIPORTS.NS','GMRINFRA.NS','SIEMENS.NS','BAJAJ-AUTO.NS','HAVELLS.NS',
+        'BHARTIARTL.NS','GODREJPROP.NS','HINDCOPPER.NS','MUTHOOTFIN.NS','SHREECEM.NS',
+        'PEL.NS','PETRONET.NS','ADANIENT.NS','ASHOKLEY.NS','HEROMOTOCO.NS','CUMMINSIND.NS',
+        'ABFRL.NS','KOTAKBANK.NS','VEDL.NS','JINDALSTEL.NS','IPCALAB.NS','MOTHERSON.NS',
+        'ONGC.NS','UPL.NS','DIXON.NS','AARTIIND.NS','BERGEPAINT.NS','LTTS.NS',
+        'PERSISTENT.NS','CIPLA.NS','COLPAL.NS','CROMPTON.NS','PIIND.NS','AMBUJACEM.NS',
+        'PIDILITIND.NS','ITC.NS','COALINDIA.NS','LALPATHLAB.NS','TATASTEEL.NS','GUJGASLTD.NS',
+        'SUNPHARMA.NS','EICHERMOT.NS','METROPOLIS.NS','LAURUSLABS.NS','ABBOTINDIA.NS',
+        'TECHM.NS','TATACHEM.NS','ABB.NS','BIOCON.NS','SBICARD.NS','HCLTECH.NS',
+        'BATAINDIA.NS','ICICIBANK.NS','LT.NS','ULTRACEMCO.NS','BPCL.NS','DEEPAKNTR.NS',
+        'GODREJCP.NS','TCS.NS','COROMANDEL.NS','SHRIRAMFIN.NS','IDEA.NS','NAUKRI.NS',
+        'BALRAMCHIN.NS','DABUR.NS','ESCORTS.NS','CHAMBLFERT.NS','NESTLEIND.NS',
+        'HINDUNILVR.NS','NAVINFLUOR.NS','BAJAJFINSV.NS','BOSCHLTD.NS','ACC.NS',
+        'CHOLAFIN.NS','DIVISLAB.NS','INDUSINDBK.NS','SBIN.NS','HDFCAMC.NS','MANAPPURAM.NS',
+        'RAMCOCEM.NS','VOLTAS.NS','RECLTD.NS','IDFC.NS','INDIGO.NS','LTF.NS','PFC.NS',
+        'UNITDSPR.NS','COFORGE.NS','GNFC.NS','HDFCBANK.NS','IDFCFIRSTB.NS','ASTRAL.NS',
+        'FEDERALBNK.NS','NMDC.NS','BAJFINANCE.NS','TITAN.NS','IRCTC.NS','DALBHARAT.NS',
+        'RELIANCE.NS','CUB.NS','LTIM.NS','TATAMOTORS.NS','AXISBANK.NS','M&M.NS',
+        'APOLLOTYRE.NS','INFY.NS','INDHOTEL.NS','PAGEIND.NS','CANFINHOME.NS','POWERGRID.NS',
+        'BEL.NS','HAL.NS','BHEL.NS','APOLLOHOSP.NS','BANDHANBNK.NS','M&MFIN.NS',
+        'LICHSGFIN.NS','BANKBARODA.NS','UBL.NS','IGL.NS','GRASIM.NS','MPHASIS.NS',
+        'BHARATFORG.NS','DRREDDY.NS','IOC.NS','TATACONSUM.NS','HINDPETRO.NS','MARICO.NS',
+        'OFSS.NS','CONCOR.NS','RBLBANK.NS','BRITANNIA.NS','AUBANK.NS','INDIACEM.NS',
+        'CANBK.NS','PVRINOX.NS','MGL.NS','EXIDEIND.NS','PNB.NS','JKCEMENT.NS',
+        'INDUSTOWER.NS','BSOFT.NS','INDIAMART.NS']
+
+if selected_page == "Chart":
     # Select product (Forex, CFD, or Crypto)
     product = st.sidebar.selectbox("Select Financial Instrument", [
         'GRANULES.NS','TATACOMM.NS','SRF.NS','SAIL.NS','TRENT.NS','MARUTI.NS','JSWSTEEL.NS',
@@ -177,43 +210,12 @@ if selected_page == "Page 1":
     else:
         st.error("Failed to fetch historical data. Please check your API key and selected instrument.")
 
-elif selected_page == "Page 2":
+elif selected_page == "Trend List":
     # Add code for the second page here
-    stock_symbols = ['GRANULES.NS','TATACOMM.NS','SRF.NS','SAIL.NS','TRENT.NS','MARUTI.NS','JSWSTEEL.NS',
-        'JUBLFOOD.NS','GAIL.NS','HDFCLIFE.NS','POLYCAB.NS','ASIANPAINT.NS','LUPIN.NS',
-        'ICICIGI.NS','GLENMARK.NS','SUNTV.NS','MFSL.NS','SYNGENE.NS','OBEROIRLTY.NS',
-        'ATUL.NS','MCX.NS','ICICIPRULI.NS','NTPC.NS','TATAPOWER.NS','TORNTPHARM.NS',
-        'AUROPHARMA.NS','DLF.NS','IEX.NS','ZYDUSLIFE.NS','ALKEM.NS','HINDALCO.NS',
-        'BALKRISIND.NS','MRF.NS','NATIONALUM.NS','SBILIFE.NS','ABCAPITAL.NS','TVSMOTOR.NS',
-        'ADANIPORTS.NS','GMRINFRA.NS','SIEMENS.NS','BAJAJ-AUTO.NS','HAVELLS.NS',
-        'BHARTIARTL.NS','GODREJPROP.NS','HINDCOPPER.NS','MUTHOOTFIN.NS','SHREECEM.NS',
-        'PEL.NS','PETRONET.NS','ADANIENT.NS','ASHOKLEY.NS','HEROMOTOCO.NS','CUMMINSIND.NS',
-        'ABFRL.NS','KOTAKBANK.NS','VEDL.NS','JINDALSTEL.NS','IPCALAB.NS','MOTHERSON.NS',
-        'ONGC.NS','UPL.NS','DIXON.NS','AARTIIND.NS','BERGEPAINT.NS','LTTS.NS',
-        'PERSISTENT.NS','CIPLA.NS','COLPAL.NS','CROMPTON.NS','PIIND.NS','AMBUJACEM.NS',
-        'PIDILITIND.NS','ITC.NS','COALINDIA.NS','LALPATHLAB.NS','TATASTEEL.NS','GUJGASLTD.NS',
-        'SUNPHARMA.NS','EICHERMOT.NS','METROPOLIS.NS','LAURUSLABS.NS','ABBOTINDIA.NS',
-        'TECHM.NS','TATACHEM.NS','ABB.NS','BIOCON.NS','SBICARD.NS','HCLTECH.NS',
-        'BATAINDIA.NS','ICICIBANK.NS','LT.NS','ULTRACEMCO.NS','BPCL.NS','DEEPAKNTR.NS',
-        'GODREJCP.NS','TCS.NS','COROMANDEL.NS','SHRIRAMFIN.NS','IDEA.NS','NAUKRI.NS',
-        'BALRAMCHIN.NS','DABUR.NS','ESCORTS.NS','CHAMBLFERT.NS','NESTLEIND.NS',
-        'HINDUNILVR.NS','NAVINFLUOR.NS','BAJAJFINSV.NS','BOSCHLTD.NS','ACC.NS',
-        'CHOLAFIN.NS','DIVISLAB.NS','INDUSINDBK.NS','SBIN.NS','HDFCAMC.NS','MANAPPURAM.NS',
-        'RAMCOCEM.NS','VOLTAS.NS','RECLTD.NS','IDFC.NS','INDIGO.NS','LTF.NS','PFC.NS',
-        'UNITDSPR.NS','COFORGE.NS','GNFC.NS','HDFCBANK.NS','IDFCFIRSTB.NS','ASTRAL.NS',
-        'FEDERALBNK.NS','NMDC.NS','BAJFINANCE.NS','TITAN.NS','IRCTC.NS','DALBHARAT.NS',
-        'RELIANCE.NS','CUB.NS','LTIM.NS','TATAMOTORS.NS','AXISBANK.NS','M&M.NS',
-        'APOLLOTYRE.NS','INFY.NS','INDHOTEL.NS','PAGEIND.NS','CANFINHOME.NS','POWERGRID.NS',
-        'BEL.NS','HAL.NS','BHEL.NS','APOLLOHOSP.NS','BANDHANBNK.NS','M&MFIN.NS',
-        'LICHSGFIN.NS','BANKBARODA.NS','UBL.NS','IGL.NS','GRASIM.NS','MPHASIS.NS',
-        'BHARATFORG.NS','DRREDDY.NS','IOC.NS','TATACONSUM.NS','HINDPETRO.NS','MARICO.NS',
-        'OFSS.NS','CONCOR.NS','RBLBANK.NS','BRITANNIA.NS','AUBANK.NS','INDIACEM.NS',
-        'CANBK.NS','PVRINOX.NS','MGL.NS','EXIDEIND.NS','PNB.NS','JKCEMENT.NS',
-        'INDUSTOWER.NS','BSOFT.NS','INDIAMART.NS']
+    
     # stock_symbols = ['TATACOMM.NS','ADANIENT.NS']
 # Function to fetch and calculate EMAs
     def get_ema_crossovers(symbol):
-        
         end_date = datetime.now().strftime('%Y-%m-%d')
         start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')  # Get data for the last day
         data = yf.download(symbol, interval='15m', period='1mo')
@@ -264,7 +266,7 @@ elif selected_page == "Page 2":
         percent_start = data.iloc[-1]['Close'] * 0.005
         # print(data)
         if ((last_two['EMA_40'].iloc[-1] <= last_two['EMA_89'].iloc[-1]) and (abs(last_two['EMA_40'].iloc[-1] - last_two['EMA_89'].iloc[-1]) >= 0 ) and (abs(last_two['EMA_40'].iloc[-1] - last_two['EMA_89'].iloc[-1] ) <= percent_start)):
-            print(last_two['EMA_40'].iloc[-1] ,' || ', last_two['EMA_89'].iloc[-1] ,' || ', last_two['EMA_40'].iloc[-1] - last_two['EMA_89'].iloc[-1] ,' || ', symbol, ' || ', percent_start ,' || \n',last_two.tail(1))
+            # print(last_two['EMA_40'].iloc[-1] ,' || ', last_two['EMA_89'].iloc[-1] ,' || ', last_two['EMA_40'].iloc[-1] - last_two['EMA_89'].iloc[-1] ,' || ', symbol, ' || ', percent_start ,' || \n',last_two.tail(1))
             
             daa =daa = [symbol, last_two['Open'].iloc[-1], last_two['Close'].iloc[-1], last_two['High'].iloc[-1], last_two['Low'].iloc[-1], last_two['Adj Close'].iloc[-1], last_two['EMA_40'].iloc[-1], last_two['EMA_89'].iloc[-1], last_two['EMA_40'].iloc[-1] - last_two['EMA_89'].iloc[-1] , last_two['TREND'].iloc[-1]]
             return daa
@@ -289,7 +291,7 @@ elif selected_page == "Page 2":
         data.append(da)
     
     if not buy_signals:
-        print("No buy signals found.")
+        st.sidebar.info("No buy signals found.")
         # ... add any other content for the second page ... 
 
     if buy_signals:
@@ -298,4 +300,261 @@ elif selected_page == "Page 2":
         df = pd.DataFrame(data, columns=columns)
         st.table(df)
     else:
-        print("No buy signals found.")
+        st.sidebar.info("No buy signals found.")
+
+elif selected_page == "All Stock List":
+    # Add code for the second page here
+    
+    # stock_symbols = ['TATACOMM.NS','ADANIENT.NS']
+# Function to fetch and calculate EMAs
+    def get_ema_crossovers(symbol):
+        end_date = datetime.now().strftime('%Y-%m-%d')
+        start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')  # Get data for the last day
+        data = yf.download(symbol, interval='15m', period='1mo')
+        
+    
+        data['EMA_40'] = ta.ema(data['Close'], length=40)  # Use pandas_ta to calculate SMA
+        data['EMA_89'] = ta.ema(data['Close'], length=89)
+        checkshot = data.ta.supertrend(length=10, multiplier=3, append=True)
+        # print(checkshot.iloc[-1])
+        checkshort = 'SELL' if checkshot.iloc[-1]["SUPERTd_10_3.0"] == -1 else 'BUY'
+        data ['TREND'] = checkshort
+        data.drop(columns=["SUPERTd_10_3.0"], inplace=True)
+        data.drop(columns=["SUPERTl_10_3.0"], inplace=True)
+        data.drop(columns=["SUPERTs_10_3.0"], inplace=True)
+        data.drop(columns=["SUPERT_10_3.0"], inplace=True)
+        # Convert data.index to timezone-naive if necessary
+        if data.index.tz is not None:
+            data.index = data.index.tz_localize(None)
+    
+        # Check if data contains enough rows
+        if len(data) < 3:
+            return None
+    
+        # Identify the time 15 minutes ago
+        now = datetime.now()
+        fifteen_minutes_ago = now - timedelta(minutes=15)
+        fifteen_minutes_ago = fifteen_minutes_ago.replace(second=0, microsecond=0)
+    
+        # Find the closest time to 15 minutes ago
+        closest_time = min(data.index, key=lambda t: abs(t - fifteen_minutes_ago))
+    
+        
+        # Get the data for the closest time
+        if closest_time not in data.index:
+            return None
+    
+        index_position = data.index.get_loc(closest_time)
+        # Ensure we have previous data to compare
+        if index_position < 1:
+            return None
+    
+        # Get the data for the closest time and the one before it
+        last_two = data.iloc[index_position-1:index_position+1]
+        if len(last_two) < 2:
+            return None
+    
+        # Condition for a crossover
+        percent_start = data.iloc[-1]['Close'] * 0.005
+        # print(data)
+        # if ((last_two['EMA_40'].iloc[-1] <= last_two['EMA_89'].iloc[-1]) and (abs(last_two['EMA_40'].iloc[-1] - last_two['EMA_89'].iloc[-1]) >= 0 ) and (abs(last_two['EMA_40'].iloc[-1] - last_two['EMA_89'].iloc[-1] ) <= percent_start)):
+            # print(last_two['EMA_40'].iloc[-1] ,' || ', last_two['EMA_89'].iloc[-1] ,' || ', last_two['EMA_40'].iloc[-1] - last_two['EMA_89'].iloc[-1] ,' || ', symbol, ' || ', percent_start ,' || \n',last_two.tail(1))
+            
+        daa = [symbol, last_two['Open'].iloc[-1], last_two['Close'].iloc[-1], last_two['High'].iloc[-1], last_two['Low'].iloc[-1], last_two['Adj Close'].iloc[-1], last_two['EMA_40'].iloc[-1], last_two['EMA_89'].iloc[-1], last_two['EMA_40'].iloc[-1] - last_two['EMA_89'].iloc[-1] , last_two['TREND'].iloc[-1]]
+        return daa
+        # if (last_two['EMA_40'].iloc[-2] <= last_two['EMA_89'].iloc[-2]) and (last_two['EMA_40'].iloc[-1] > last_two['EMA_89'].iloc[-1]):
+        #     return last_two.tail(1)
+    
+        # return None
+    
+    # Check for buy signals across all stocks
+    buy_signals = {}
+    data = []
+    for symbol in stock_symbols:
+        signal = get_ema_crossovers(symbol)
+        if signal is not None:
+            buy_signals[symbol] = signal
+    
+    # Print buy signals
+    for symbol, signal in buy_signals.items():
+        # print(f"Buy signal for {symbol}:")
+        # print(signal)
+        da = signal
+        data.append(da)
+    
+    if not buy_signals:
+        st.sidebar.info("No buy signals found.")
+        # ... add any other content for the second page ... 
+
+    if buy_signals:
+        data = sorted(data, key=lambda x: x[-2], reverse=True)
+        columns = ['symbol', 'Open', 'Close', 'High', 'Low', 'Adj Close', 'EMA_89', 'EMA_40','EMA_40 - EMA_89', 'Trend']
+        df = pd.DataFrame(data, columns=columns)
+        st.table(df)
+    else:
+        st.sidebar.info("No buy signals found.")
+
+elif selected_page == "HEATMAP":
+    import numpy as np
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+
+    def get_ema_crossovers(symbol):
+        data = yf.download(symbol, interval='15m', period='1mo')
+
+        if data.index.tz is not None:
+            data.index = data.index.tz_localize(None)
+
+        if len(data) < 2:
+            return None
+
+        yesterday = datetime.now() - timedelta(days=1)
+        yesterday_close_time = yesterday.replace(hour=15, minute=15, second=0, microsecond=0)
+
+        closest_time_yesterday = min(data.index, key=lambda t: abs(t - yesterday_close_time))
+        yesterday_close_price = data.loc[closest_time_yesterday]['Close']
+
+        today_current_price = data.iloc[-1]['Close']
+
+        price_diff = today_current_price - yesterday_close_price
+        price_change_percent = (price_diff / yesterday_close_price) * 100
+
+        return [symbol, price_change_percent, price_diff]
+
+    buy_signals = []
+    for symbol in stock_symbols:
+        signal = get_ema_crossovers(symbol)
+        if signal is not None:
+            buy_signals.append(signal)
+
+    if buy_signals:
+        data = sorted(buy_signals, key=lambda x: x[-2], reverse=True)
+        df = pd.DataFrame(data, columns=['Symbol', 'Price Change %', 'Price Difference'])
+        df['Price Change %'] = df['Price Change %'].round(2)  # Round to 2 decimal places for clarity
+
+        # Prepare the grid size
+        num_symbols = len(df)
+        tiles_per_row = 6
+        num_rows = (num_symbols + tiles_per_row - 1) // tiles_per_row  # Calculate required rows
+
+        # Preparing data for the heatmap
+        symbols = [f"{row['Symbol']} \n({row['Price Change %']}%)" for _, row in df.iterrows()]
+        heatmap_data = np.zeros((num_rows, tiles_per_row))
+        heatmap_data.flat[:len(df)] = df['Price Change %']
+
+        # Calculate figure size based on the number of symbols and desired tile size (100px)
+        tile_size = 100  # in pixels
+        fig_width = tiles_per_row * tile_size / 100  # Convert px to inches for matplotlib
+        fig_height = num_rows * tile_size / 100  # Adjust height based on rows
+        fig, ax = plt.subplots(figsize=(fig_width, fig_height))  # Adjust figsize for square tiles
+        sns.heatmap(
+            heatmap_data,
+            annot=np.array(symbols).reshape(num_rows, tiles_per_row),  # Annotate with symbol and price change
+            fmt="",  # Empty format since we're using custom text annotations
+            cmap="RdYlGn",  # Reverse the colormap to go from dark green to dark red
+            linewidths=.5,
+            ax=ax,
+            cbar=True,
+            square=True  # Ensures each cell is square
+        )
+
+        # Set the x-ticks to match the number of tiles per row
+        ax.set_xticks(np.arange(tiles_per_row) + 0.5)  # +0.5 to center labels
+        ax.set_xticklabels([])  # Remove x-axis labels since they're in the cells
+
+        # Set the y-ticks to match the number of rows
+        ax.set_yticks(np.arange(num_rows) + 0.5)  # +0.5 to center labels
+        ax.set_yticklabels([])  # Remove y-axis labels since they're in the cells
+
+        # Adjust text font size and weight
+        for text in ax.texts:
+            text.set_size(4)  # Reduce font size to 7px
+            text.set_weight('bold')  # Make text bold
+            # text.set_fontfamily('sans-serif')  # Use sans-serif font
+
+        ax.set_xlabel('Price Change %')
+        ax.set_title('Stock Heatmap based on Price Change %')
+
+        st.pyplot(fig)
+    else:
+        st.sidebar.info("No buy signals found.")
+
+elif selected_page == "HEATMAP Volume":
+    import numpy as np
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    import yfinance as yf
+    import pandas as pd
+    from datetime import datetime, timedelta
+
+    def get_volume_data(symbol):
+        try:
+            # Fetch historical data for the past 5 days
+            data = yf.download(symbol, interval='1d', period='5d')
+            if data.index.tz is not None:
+                data.index = data.index.tz_localize(None)
+            if len(data) < 5:
+                return None
+            # Extract the volume for each day
+            volumes = data['Volume'].values
+            return [symbol] + list(volumes)
+        except Exception as e:
+            print(f"Error fetching data for {symbol}: {e}")
+            return None
+
+    volume_data = []
+    for symbol in stock_symbols:
+        data = get_volume_data(symbol)
+        if data is not None:
+            volume_data.append(data)
+
+    if volume_data:
+        # Create a DataFrame
+        df = pd.DataFrame(volume_data, columns=['Symbol'] + [f'Day {i+1}' for i in range(5)])
+        
+        # Define the number of symbols and days
+        num_symbols = len(df)
+        num_days = 5
+        
+        # Prepare the heatmap data
+        heatmap_data = df.drop('Symbol', axis=1).values
+
+        # Prepare symbols for annotation
+        symbols = np.array([[f"{row['Symbol']}\n{row[f'Day {i+1}']}" for i in range(num_days)] for _, row in df.iterrows()])
+
+        # Calculate figure size based on the number of symbols and desired tile size (100px)
+        tile_size = 100  # in pixels
+        fig_width = num_days * tile_size / 100  # Adjust width based on days
+        fig_height = num_symbols * tile_size / 100  # Adjust height based on rows
+        fig, ax = plt.subplots(figsize=(fig_width, fig_height))  # Adjust figsize for square tiles
+
+        sns.heatmap(
+            heatmap_data,
+            annot=symbols,  # Annotate with symbol and volume
+            fmt="",  # Empty format since we're using custom text annotations
+            cmap="Blues",  # Use a colormap that suits your needs
+            linewidths=.5,
+            ax=ax,
+            cbar=True,
+            square=True  # Ensures each cell is square
+        )
+
+        # Set the x-ticks to match the number of days
+        ax.set_xticks(np.arange(num_days) + 0.5)  # +0.5 to center labels
+        ax.set_xticklabels([f'Day {i+1}' for i in range(num_days)])  # Day labels
+
+        # Set the y-ticks to match the number of symbols
+        ax.set_yticks(np.arange(num_symbols) + 0.5)  # +0.5 to center labels
+        ax.set_yticklabels([])  # Remove y-axis labels since they're in the cells
+
+        # Adjust text font size and weight
+        for text in ax.texts:
+            text.set_size(4)  # Adjust font size as needed
+            text.set_weight('bold')  # Make text bold
+
+        ax.set_xlabel('Days')
+        ax.set_title('Stock Volume Heatmap for the Past 5 Days')
+
+        st.pyplot(fig)
+    else:
+        st.sidebar.info("No volume data found.")
