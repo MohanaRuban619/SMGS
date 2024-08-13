@@ -218,7 +218,7 @@ elif selected_page == "Trend List":
     def get_ema_crossovers(symbol):
         end_date = datetime.now().strftime('%Y-%m-%d')
         start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')  # Get data for the last day
-        data = yf.download(symbol, interval='15m', period='1mo')
+        data = yf.download(symbol, interval='15m', period='max')
         
     
         data['EMA_40'] = ta.ema(data['Close'], length=40)  # Use pandas_ta to calculate SMA
@@ -310,7 +310,7 @@ elif selected_page == "All Stock List":
     def get_ema_crossovers(symbol):
         end_date = datetime.now().strftime('%Y-%m-%d')
         start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')  # Get data for the last day
-        data = yf.download(symbol, interval='15m', period='1mo')
+        data = yf.download(symbol, interval='15m', period='max')
         
     
         data['EMA_40'] = ta.ema(data['Close'], length=40)  # Use pandas_ta to calculate SMA
@@ -400,7 +400,7 @@ elif selected_page == "HEATMAP":
     import matplotlib.pyplot as plt
 
     def get_ema_crossovers(symbol):
-        data = yf.download(symbol, interval='15m', period='1mo')
+        data = yf.download(symbol, interval='15m', period='max')
 
         if data.index.tz is not None:
             data.index = data.index.tz_localize(None)
