@@ -55,6 +55,8 @@ def fetch_historical_data(product, period, interval):
 # Sidebar
 st.sidebar.title("Candlestick Charts")
 selected_page = st.sidebar.selectbox("Select Page", ["Chart", "Trend List","All Stock List","HEATMAP","HEATMAP Volume"])
+period = st.sidebar.selectbox("Select Period", ("1d", "5d", "1mo", "max"))
+interval = st.sidebar.selectbox("Select Interval", ("1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"))
 
 stock_symbols = ['GRANULES.NS','TATACOMM.NS','SRF.NS','SAIL.NS','TRENT.NS','MARUTI.NS','JSWSTEEL.NS',
         'JUBLFOOD.NS','GAIL.NS','HDFCLIFE.NS','POLYCAB.NS','ASIANPAINT.NS','LUPIN.NS',
@@ -123,9 +125,7 @@ if selected_page == "Chart":
         'CANBK.NS','PVRINOX.NS','MGL.NS','EXIDEIND.NS','PNB.NS','JKCEMENT.NS',
         'INDUSTOWER.NS','BSOFT.NS','INDIAMART.NS'])
 
-    period = st.sidebar.selectbox("Select Period", ("1d", "5d", "1mo", "max"))
-    interval = st.sidebar.selectbox("Select Interval", ("1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"))
-
+    
     # Fetch historical data
     historical_data, next_dividend_date, days_left_dividend, next_earnings_date, days_left_earnings, next_quarterly_results_date, days_left_quarterly_results = fetch_historical_data(product, period, interval)
 
@@ -218,7 +218,7 @@ elif selected_page == "Trend List":
     def get_ema_crossovers(symbol):
         end_date = datetime.now().strftime('%Y-%m-%d')
         start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')  # Get data for the last day
-        data = yf.download(symbol, interval='15m', period='max')
+        data = yf.download(symbol, interval=interval, period=period)
         
     
         data['EMA_40'] = ta.ema(data['Close'], length=40)  # Use pandas_ta to calculate SMA
@@ -310,7 +310,7 @@ elif selected_page == "All Stock List":
     def get_ema_crossovers(symbol):
         end_date = datetime.now().strftime('%Y-%m-%d')
         start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')  # Get data for the last day
-        data = yf.download(symbol, interval='15m', period='max')
+        data = yf.download(symbol, interval=interval, period=period)
         
     
         data['EMA_40'] = ta.ema(data['Close'], length=40)  # Use pandas_ta to calculate SMA
@@ -400,7 +400,7 @@ elif selected_page == "HEATMAP":
     import matplotlib.pyplot as plt
 
     def get_ema_crossovers(symbol):
-        data = yf.download(symbol, interval='15m', period='max')
+        data = yf.download(symbol, interval=interval, period=period)
 
         if data.index.tz is not None:
             data.index = data.index.tz_localize(None)
@@ -490,7 +490,7 @@ elif selected_page == "HEATMAP Volume":
     def get_volume_data(symbol):
         try:
             # Fetch historical data for the past 5 days
-            data = yf.download(symbol, interval='1d', period='5d')
+            data = yf.download(symbol, interval=interval, period=period)
             if data.index.tz is not None:
                 data.index = data.index.tz_localize(None)
             if len(data) < 5:
