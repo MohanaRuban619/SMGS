@@ -431,53 +431,9 @@ elif selected_page == "HEATMAP":
         data = sorted(buy_signals, key=lambda x: x[-2], reverse=True)
         df = pd.DataFrame(data, columns=['Symbol', 'Price Change %', 'Price Difference'])
         df['Price Change %'] = df['Price Change %'].round(2)  # Round to 2 decimal places for clarity
-
-        # Prepare the grid size
-        num_symbols = len(df)
-        tiles_per_row = 6
-        num_rows = (num_symbols + tiles_per_row - 1) // tiles_per_row  # Calculate required rows
-
-        # Preparing data for the heatmap
-        symbols = [f"{row['Symbol']} \n({row['Price Change %']}%)" for _, row in df.iterrows()]
-        heatmap_data = np.zeros((num_rows, tiles_per_row))
-        heatmap_data.flat[:len(df)] = df['Price Change %']
-
-        # Calculate figure size based on the number of symbols and desired tile size (100px)
-        tile_size = 100  # in pixels
-        fig_width = tiles_per_row * tile_size / 100  # Convert px to inches for matplotlib
-        fig_height = num_rows * tile_size / 100  # Adjust height based on rows
-        fig, ax = plt.subplots(figsize=(fig_width, fig_height))  # Adjust figsize for square tiles
-        sns.heatmap(
-            heatmap_data,
-            annot=np.array(symbols).reshape(num_rows, tiles_per_row),  # Annotate with symbol and price change
-            fmt="",  # Empty format since we're using custom text annotations
-            cmap="RdYlGn",  # Reverse the colormap to go from dark green to dark red
-            linewidths=.5,
-            ax=ax,
-            cbar=True,
-            square=True  # Ensures each cell is square
-        )
-
-        # Set the x-ticks to match the number of tiles per row
-        ax.set_xticks(np.arange(tiles_per_row) + 0.5)  # +0.5 to center labels
-        ax.set_xticklabels([])  # Remove x-axis labels since they're in the cells
-
-        # Set the y-ticks to match the number of rows
-        ax.set_yticks(np.arange(num_rows) + 0.5)  # +0.5 to center labels
-        ax.set_yticklabels([])  # Remove y-axis labels since they're in the cells
-
-        # Adjust text font size and weight
-        for text in ax.texts:
-            text.set_size(4)  # Reduce font size to 7px
-            text.set_weight('bold')  # Make text bold
-            # text.set_fontfamily('sans-serif')  # Use sans-serif font
-
-        ax.set_xlabel('Price Change %')
-        ax.set_title('Stock Heatmap based on Price Change %')
-
-        st.pyplot(fig)
-    else:
-        st.sidebar.info("No buy signals found.")
+        st.table(df)
+    #     
+    
 
 elif selected_page == "HEATMAP Volume":
     import numpy as np
@@ -487,74 +443,31 @@ elif selected_page == "HEATMAP Volume":
     import pandas as pd
     from datetime import datetime, timedelta
 
-    def get_volume_data(symbol):
+    def get_volume_data(symbol, interval, period):
         try:
-            # Fetch historical data for the past 5 days
+            # Fetch historical data for the selected interval and period
             data = yf.download(symbol, interval=interval, period=period)
             if data.index.tz is not None:
                 data.index = data.index.tz_localize(None)
-            if len(data) < 5:
-                return None
-            # Extract the volume for each day
+           
+            data = data[-5:]
+            # Extract the volume for each interval
             volumes = data['Volume'].values
-            return [symbol] + list(volumes)
+            timestamps = data.index.strftime('%Y-%m-%d %H:%M')  # Format timestamps to show in the table
+            return [symbol] + list(volumes), list(timestamps)
         except Exception as e:
-            print(f"Error fetching data for {symbol}: {e}")
-            return None
+            st.error(f"Error fetching data for {symbol}: {e}")
+            return None, None
 
     volume_data = []
+    timestamp_data = []
     for symbol in stock_symbols:
-        data = get_volume_data(symbol)
-        if data is not None:
-            volume_data.append(data)
+        volumes, timestamps = get_volume_data(symbol, interval, period)
+        if volumes is not None and timestamps is not None:
+            volume_data.append(volumes)
+            timestamp_data = timestamps
 
     if volume_data:
         # Create a DataFrame
-        df = pd.DataFrame(volume_data, columns=['Symbol'] + [f'Day {i+1}' for i in range(5)])
-        
-        # Define the number of symbols and days
-        num_symbols = len(df)
-        num_days = 5
-        
-        # Prepare the heatmap data
-        heatmap_data = df.drop('Symbol', axis=1).values
-
-        # Prepare symbols for annotation
-        symbols = np.array([[f"{row['Symbol']}\n{row[f'Day {i+1}']}" for i in range(num_days)] for _, row in df.iterrows()])
-
-        # Calculate figure size based on the number of symbols and desired tile size (100px)
-        tile_size = 100  # in pixels
-        fig_width = num_days * tile_size / 100  # Adjust width based on days
-        fig_height = num_symbols * tile_size / 100  # Adjust height based on rows
-        fig, ax = plt.subplots(figsize=(fig_width, fig_height))  # Adjust figsize for square tiles
-
-        sns.heatmap(
-            heatmap_data,
-            annot=symbols,  # Annotate with symbol and volume
-            fmt="",  # Empty format since we're using custom text annotations
-            cmap="Blues",  # Use a colormap that suits your needs
-            linewidths=.5,
-            ax=ax,
-            cbar=True,
-            square=True  # Ensures each cell is square
-        )
-
-        # Set the x-ticks to match the number of days
-        ax.set_xticks(np.arange(num_days) + 0.5)  # +0.5 to center labels
-        ax.set_xticklabels([f'Day {i+1}' for i in range(num_days)])  # Day labels
-
-        # Set the y-ticks to match the number of symbols
-        ax.set_yticks(np.arange(num_symbols) + 0.5)  # +0.5 to center labels
-        ax.set_yticklabels([])  # Remove y-axis labels since they're in the cells
-
-        # Adjust text font size and weight
-        for text in ax.texts:
-            text.set_size(4)  # Adjust font size as needed
-            text.set_weight('bold')  # Make text bold
-
-        ax.set_xlabel('Days')
-        ax.set_title('Stock Volume Heatmap for the Past 5 Days')
-
-        st.pyplot(fig)
-    else:
-        st.sidebar.info("No volume data found.")
+        df = pd.DataFrame(volume_data, columns=['Symbol'] + timestamp_data[:len(volume_data[0]) - 1])
+        st.table(df)
