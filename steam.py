@@ -7,6 +7,13 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
+def format_volume(volume):
+    # Convert volume to integer, if it's a float or string
+    volume = int(volume)
+    
+    # Format volume with commas as thousands separators
+    return "{:,}".format(volume)
+
 
 def fetch_historical_data(product, period, interval):
     # Fetch historical data using yfinance
@@ -465,7 +472,8 @@ elif selected_page == "HEATMAP Volume":
     for symbol in stock_symbols:
         volumes, timestamps = get_volume_data(symbol, interval, period)
         if volumes is not None and timestamps is not None:
-            volume_data.append(volumes)
+            formatted_volumes = [format_volume(v) for v in volumes]
+            volume_data.append(formatted_volumes)
             timestamp_data = timestamps
 
     if volume_data:
