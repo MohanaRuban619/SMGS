@@ -11,8 +11,9 @@ def format_volume(volume):
     return "{:,}".format(int(volume))
 
 def format_indian_number(number):
-    """Format a number using the Indian numbering system with no leading zeros."""
-    number_str = str(number).lstrip('0')  # Remove leading zeros
+    """Format a number using the Indian numbering system, ensuring no leading zeros are included."""
+    # Convert number to integer to remove any leading zeros and then back to string
+    number_str = str(int(number))
     
     if not number_str:  # Handle the case where the number is zero
         return '0'
