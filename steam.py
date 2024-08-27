@@ -442,7 +442,8 @@ elif selected_page == "HEATMAP Volume":
     import yfinance as yf
     import pandas as pd
     from datetime import datetime, timedelta
-
+    days = st.sidebar.selectbox("Select Period", ("1", "5", "7", "14","30"))
+    days = int(days)
     def get_volume_data(symbol, interval, period):
         try:
             # Fetch historical data for the selected interval and period
@@ -450,7 +451,7 @@ elif selected_page == "HEATMAP Volume":
             if data.index.tz is not None:
                 data.index = data.index.tz_localize(None)
            
-            data = data[-5:]
+            data = data[-days:]
             # Extract the volume for each interval
             volumes = data['Volume'].values
             timestamps = data.index.strftime('%Y-%m-%d %H:%M')  # Format timestamps to show in the table
