@@ -8,11 +8,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 
 def format_volume(volume):
-    # Convert volume to integer, if it's a float or string
-    volume = int(volume)
-    
-    # Format volume with commas as thousands separators
-    return "{:,}".format(volume)
+    return "{:,}".format(int(volume))
 
 
 def fetch_historical_data(product, period, interval):
@@ -461,8 +457,9 @@ elif selected_page == "HEATMAP Volume":
             data = data[-days:]
             # Extract the volume for each interval
             volumes = data['Volume'].values
+            formatted_volumes = format_volume(volumes) 
             timestamps = data.index.strftime('%Y-%m-%d %H:%M')  # Format timestamps to show in the table
-            return [symbol] + list(volumes), list(timestamps)
+            return [symbol] + list(formatted_volumes), list(timestamps)
         except Exception as e:
             st.error(f"Error fetching data for {symbol}: {e}")
             return None, None
@@ -472,8 +469,7 @@ elif selected_page == "HEATMAP Volume":
     for symbol in stock_symbols:
         volumes, timestamps = get_volume_data(symbol, interval, period)
         if volumes is not None and timestamps is not None:
-            formatted_volumes = [format_volume(v) for v in volumes]
-            volume_data.append(formatted_volumes)
+            volume_data.append(volumes)
             timestamp_data = timestamps
 
     if volume_data:
