@@ -11,8 +11,12 @@ def format_volume(volume):
     return "{:,}".format(int(volume))
 
 def format_indian_number(number):
-    """Format a number using the Indian numbering system."""
-    number_str = str(number)
+    """Format a number using the Indian numbering system with no leading zeros."""
+    number_str = str(number).lstrip('0')  # Remove leading zeros
+    
+    if not number_str:  # Handle the case where the number is zero
+        return '0'
+    
     # Split the number into integer and fractional parts
     if '.' in number_str:
         integer_part, fractional_part = number_str.split('.')
