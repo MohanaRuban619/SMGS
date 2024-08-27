@@ -456,7 +456,7 @@ elif selected_page == "HEATMAP Volume":
             # Extract the volume for each interval
             volumes = data['Volume'].values
             print(volumes)
-            formatted_volumes = "{:,}".format(int(volumes))
+            formatted_volumes = [format_volume(v) for v in volumes]
             timestamps = data.index.strftime('%Y-%m-%d %H:%M')  # Format timestamps to show in the table
             return [symbol] + list(formatted_volumes), list(timestamps)
         except Exception as e:
