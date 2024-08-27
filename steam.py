@@ -10,6 +10,34 @@ def format_volume(volume):
     """Format a single volume with commas."""
     return "{:,}".format(int(volume))
 
+def format_indian_number(number):
+    """Format a number using the Indian numbering system."""
+    number_str = str(number)
+    # Split the number into integer and fractional parts
+    if '.' in number_str:
+        integer_part, fractional_part = number_str.split('.')
+    else:
+        integer_part = number_str
+        fractional_part = ''
+    
+    # Reverse the integer part for easier processing
+    integer_part_reversed = integer_part[::-1]
+    
+    # Apply Indian numbering system format
+    formatted_reversed = []
+    for i in range(0, len(integer_part_reversed), 2):
+        if i == 0:
+            formatted_reversed.append(integer_part_reversed[i:i+3])
+        else:
+            formatted_reversed.append(integer_part_reversed[i:i+2])
+    
+    # Reverse the formatted parts and join with commas
+    formatted_number = ','.join(formatted_reversed[::-1])
+    
+    if fractional_part:
+        return f"{formatted_number}.{fractional_part}"
+    else:
+        return formatted_number
 
 def fetch_historical_data(product, period, interval):
     # Fetch historical data using yfinance
@@ -458,7 +486,7 @@ elif selected_page == "HEATMAP Volume":
             # Extract the volume for each interval
             volumes = data['Volume'].values
             print(volumes)
-            formatted_volumes = [format_volume(v) for v in volumes]
+            formatted_volumes = [format_indian_number(v) for v in volumes]
             timestamps = data.index.strftime('%Y-%m-%d %H:%M')  # Format timestamps to show in the table
             return [symbol] + list(formatted_volumes), list(timestamps)
         except Exception as e:
