@@ -6,7 +6,9 @@ import pandas_ta as ta
 from datetime import datetime, timedelta
 
 import pandas as pd
-
+def format_volume(volume):
+    """Format a single volume with commas."""
+    return "{:,}".format(int(volume))
 
 
 def fetch_historical_data(product, period, interval):
