@@ -7,8 +7,6 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
-def format_volume(volume):
-    return "{:,}".format(int(volume))
 
 
 def fetch_historical_data(product, period, interval):
@@ -457,7 +455,7 @@ elif selected_page == "HEATMAP Volume":
             data = data[-days:]
             # Extract the volume for each interval
             volumes = data['Volume'].values
-            formatted_volumes = format_volume(volumes) 
+            formatted_volumes = "{:,}".format(int(volumes))
             timestamps = data.index.strftime('%Y-%m-%d %H:%M')  # Format timestamps to show in the table
             return [symbol] + list(formatted_volumes), list(timestamps)
         except Exception as e:
