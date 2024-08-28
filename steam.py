@@ -491,9 +491,9 @@ elif selected_page == "HEATMAP Volume":
             # Extract the volume for each interval
             volumes = data['Volume'].values
             print(volumes)
-            formatted_volumes = [format_indian_number(v) for v in volumes]
+            # formatted_volumes = [format_indian_number(v) for v in volumes]
             timestamps = data.index.strftime('%Y-%m-%d %H:%M')  # Format timestamps to show in the table
-            return [symbol] + list(formatted_volumes), list(timestamps)
+            return [symbol] + list(volumes), list(timestamps)
         except Exception as e:
             st.error(f"Error fetching data for {symbol}: {e}")
             return None, None
